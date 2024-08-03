@@ -1,11 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { registerCallableModule, StyleSheet, Text, View } from 'react-native';
+import  RefreshButton  from './components/RefreshButton';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export default function App() {
+  const refreshPressed = () => {
+    alert('Foo');
+  }
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <RefreshButton onPress={refreshPressed} />
     </View>
   );
 }
@@ -13,7 +17,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgb(31, 31, 31)',
     alignItems: 'center',
     justifyContent: 'center',
   },
