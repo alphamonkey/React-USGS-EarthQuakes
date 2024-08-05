@@ -12,8 +12,8 @@ export default function FeatureListItem({feature}) {
     return (
     <View style={styles.container}>
         <Text style={styles.title}>{strippedPlace ? strippedPlace : feature.properties.place}</Text>
-        
-        <Text style={magStyle}>{feature.properties.mag}</Text>
+        {feature.properties.mag ? (<Text style={magStyle}>{feature.properties.mag.toFixed(2)}</Text>):(<Text />)}
+               
     </View>
     );
 }
