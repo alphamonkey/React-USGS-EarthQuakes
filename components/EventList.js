@@ -1,16 +1,19 @@
 import {View, StyleSheet, FlatList, Text} from 'react-native';
-
+import FeatureListItem from './FeatureListItem';
 export default function EventList({features}) {
     return (
     <View style = {styles.container} >
+
+
     <FlatList
         vertical
         data = {features}
         contentContainerStyle = {styles.listContainer}
         renderItem = {( {item, index}) => (
-            <Text style = {styles.title}>{item.properties.place}</Text>
+            <FeatureListItem feature={item} />
         )}
         />
+
     </View>
     )
 
@@ -18,18 +21,22 @@ export default function EventList({features}) {
 
 const styles = StyleSheet.create ( {
     container: {
-
-        marginLeft:18,
-        marginRight:18,
-        paddingBottom:18,
-        paddingTop:50,
-
+        flex:1,
+        marginLeft:8,
+        marginRight:8,
+        marginTop:8,
+        marginBottom:8,
+        backgroundColor:'rgb(51,51,51)',
+        borderRadius:16,
     },
-    listContainer: {
+    listContainer:  {
+        padding:16,
         
     },
     title: {
         color:'#fff',
     },
+
+
 }
 );

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { registerCallableModule, StyleSheet, Text, View, Alert } from 'react-native';
+import { registerCallableModule, StyleSheet, Text, View, Alert, SafeAreaView } from 'react-native';
 import { useState } from 'react'
 import  RefreshButton  from './components/RefreshButton';
 import EventList from './components/EventList';
@@ -34,33 +34,45 @@ export default function App() {
     setIsLoading(false);
   }
   return (
-
-    <View style={styles.container}>
-      <EventList features={features} />
-      {isLoading? (<Text style={styles.title}>Loading</Text>):(<RefreshButton onPress={refreshPressed} />
-      
-      )
-      
-      }
-      
-      <Text style={styles.title}>{title}</Text>
-    </View>
+    <SafeAreaView style={styles.topLevelContainer}>
+      <View style={styles.primaryContainer}>
+        <EventList features={features} />
+        <View style={styles.bottomBar}>
+          <RefreshButton onPress={refreshPressed} />
+          {isLoading? (<Text style={styles.title}>Loading...</Text>):(<Text style={styles.title}>Press Refresh to Go</Text>)
+          }
+          
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
 
-  container: {
+  topLevelContainer: {
     flex: 1,
     backgroundColor: 'rgb(31, 31, 31)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop:12,
-
+  },
+  bottomBar: {
+    height:64,
+    backgroundColor:'rgb(51,51,51)',
+    alignItems:'center',
+    flexDirection:'row-reverse',
+    borderRadius:16,
+    marginLeft:4,
+    marginRight:4,
+  },
+  primaryContainer: {
+    flex:1,
 
   },
   title: {
     color:'#fff',
-    padding:8,
+    padding:12,
+    fontSize:20,
+    
+
+  
   },
 });

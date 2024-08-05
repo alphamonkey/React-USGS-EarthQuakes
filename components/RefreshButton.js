@@ -14,9 +14,10 @@ export default function RefreshButton({onPress}) {
 
 const styles= StyleSheet.create ({
     refreshButtonContainer: {
-        width:84,
-        height:84,
-        marginHorizontal:60,
+        width:56,
+        height:56,
+
+        marginRight:8,
         borderWidth:4,
         borderColor:'rgb(102,211,110)',
         borderRadius:42,
