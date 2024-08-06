@@ -1,6 +1,6 @@
-import {View, StyleSheet, FlatList, Text} from 'react-native';
+import {View, StyleSheet, FlatList, Text, Pressablew} from 'react-native';
 import FeatureListItem from './FeatureListItem';
-export default function EventList({features}) {
+export default function EventList({features, onSelect, onCloseModal}) {
     return (
     <View style = {styles.container} >
 
@@ -10,7 +10,11 @@ export default function EventList({features}) {
         data = {features}
         contentContainerStyle = {styles.listContainer}
         renderItem = {( {item, index}) => (
-            <FeatureListItem feature={item} />
+
+            <Pressable onPress={() => {onSelect(item)}}>
+                <FeatureListItem feature={item} />
+            </Pressable>
+
         )}
         />
 
