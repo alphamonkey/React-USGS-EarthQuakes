@@ -14,7 +14,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "us.alphamonkey.React-USGS-EarthQuakes"
+      "bundleIdentifier": "us.alphamonkey.React-USGS-EarthQuakes",
+      "config": {
+        "googleMapsApiKey":"AIzaSyDEJm0WyVOiAiVAoRLXo4_ISEhG0qv7cPg"
+      }
     },
     "android": {
       "adaptiveIcon": {

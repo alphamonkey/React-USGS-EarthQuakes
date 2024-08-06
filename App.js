@@ -73,7 +73,7 @@ export default function App() {
           
         </View>
       </View>
-      <FeatureDetail feature={pickedFeature} isVisible={isModalVisible} />
+      <FeatureDetail feature={pickedFeature} isVisible={isModalVisible} onClose={closeModal} />
     </SafeAreaView>
   );
 }

@@ -1,4 +1,4 @@
-import {View, StyleSheet, FlatList, Text, Pressablew} from 'react-native';
+import {View, StyleSheet, FlatList, Text, Pressable} from 'react-native';
 import FeatureListItem from './FeatureListItem';
 export default function EventList({features, onSelect, onCloseModal}) {
     return (
