@@ -70,7 +70,7 @@ const styles = StyleSheet.create ({
     map: {
         flex:18,
         backgroundColor:'rgb(51,51,51)',
-      
+        marginTop:12,
         marginLeft:12,
         marginRight:12,
         marginBottom:12,
@@ -86,6 +86,7 @@ const styles = StyleSheet.create ({
         marginLeft:12,
         marginBottom:12,
         marginRight:12,
+        borderRadius:16,
     },
     modalContent: {
         flex:1,

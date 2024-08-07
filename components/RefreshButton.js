@@ -6,7 +6,7 @@ export default function RefreshButton({onPress}) {
 
         <View style={styles.refreshButtonContainer}>
             <Pressable  onPress = {onPress} style={styles.refreshButton}>
-                <Ionicons name="reload" size={38} color='rgb(31, 31, 31)' />
+                <Ionicons name="reload" size={26} color='rgb(31, 31, 31)' />
            </Pressable>
         </View>
     );
@@ -14,8 +14,8 @@ export default function RefreshButton({onPress}) {
 
 const styles= StyleSheet.create ({
     refreshButtonContainer: {
-        width:56,
-        height:56,
+        width:44,
+        height:44,
 
         marginRight:8,
         borderWidth:4,
