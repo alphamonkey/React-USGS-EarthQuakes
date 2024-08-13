@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { registerCallableModule, StyleSheet, Text, View, Alert, SafeAreaView } from 'react-native';
+import { registerCallableModule, StyleSheet, Text, View, Alert, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useState } from 'react'
 import  RefreshButton  from './components/RefreshButton';
 import EventList from './components/EventList';
@@ -93,7 +93,8 @@ export default function App() {
       
 
       <View style={styles.primaryContainer}>
-        <EventList features={features} onSelect={featurePicked} currentLocation={currentLocation}/>
+        {isLoading ? (<ActivityIndicator size='large' color='rgb(102,211,110)' style={{flex:1}}/>):(<EventList features={features} onSelect={featurePicked} currentLocation={currentLocation}/>)}
+       
      
         <View style={styles.bottomBar}>
           <RefreshButton onPress={refreshPressed} />
