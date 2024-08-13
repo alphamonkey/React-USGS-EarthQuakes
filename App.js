@@ -14,36 +14,62 @@ export default function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [title, setTitle] = useState('Press to refresh');
   const [pickedFeature, setPickedFeature] = useState(null);
-
+  const [currentLocation, setCurrentLocation] = useState(null);
+  
   const featurePicked = (feature) => {
     setPickedFeature(feature);
     setIsModalVisible(true);
   }
+
   const closeModal = () => {
     setIsModalVisible(false);
   }
-  const refreshPressed = async () => {
-    setIsLoading(true);
-    
+
+  const milesToKilometers = (miles) => {
+    return miles * 1.6
+  }
+
+  const checkLocationPermissions = async () => {
     var locationPermissionStatus = await Location.getForegroundPermissionsAsync();
+    
     if (locationPermissionStatus.granted !== true) {
        locationPermissionStatus = await Location.requestForegroundPermissionsAsync();
     }
+
     if (locationPermissionStatus.granted !== true) {
-      alert('No location permissions');
+      return false;
+    }
+
+    return true;
+  }
+
+  const refreshPressed = async () => {
+
+    setIsLoading(true);
+    
+    if (checkLocationPermissions() === false) {
+      Alert.alert('Location Error', 'Please grant permission to use location services in Settings');
+      setIsLoading(false);
       return;
     }
 
-    let currentLocation = await Location.getCurrentPositionAsync({});
-    let radius = 50 * 1.6;
-    console.log(radius);
+    let loc = await Location.getCurrentPositionAsync({});
     
+    if (!loc) {
+      Alert.alert('Location Error', 'Unable to get current location');
+      setIsLoading(false);
+      return;  
+    }
+    
+    const radius = milesToKilometers(50);
     
     let queryDate = new Date();
     queryDate.setDate(queryDate.getDate() - 1);
     console.log(queryDate.toISOString());
+    const urlString = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&starttime=' + queryDate.toISOString() + '&latitude=' + loc.coords.latitude + '&longitude=' + loc.coords.longitude + '&maxradiuskm=' + radius + "&minmagnitude=1" + "&orderby=magnitude";
+    console.log(urlString);
     try {
-      const response = await fetch('https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&starttime=' + queryDate.toISOString() + '&latitude=' + currentLocation.coords.latitude + '&longitude=' + currentLocation.coords.longitude + '&maxradiuskm=' + radius,);
+      const response = await fetch(urlString);
       if (response.status === 200) {
         const json = await response.json();
         setTitle(json.metadata.title);
@@ -57,15 +83,18 @@ export default function App() {
     } catch (error) {
       Alert.alert('Fetch Error', error);
     } 
+
+    setCurrentLocation([loc.coords.latitude, loc.coords.longitude]);
     setIsLoading(false);
+
   }
   return (
     <SafeAreaView style={styles.topLevelContainer}>
       
 
       <View style={styles.primaryContainer}>
-      
-        <EventList features={features} onSelect={featurePicked} />
+        <EventList features={features} onSelect={featurePicked} currentLocation={currentLocation}/>
+     
         <View style={styles.bottomBar}>
           <RefreshButton onPress={refreshPressed} />
           {isLoading? (<Text style={styles.title}>Loading...</Text>):(<Text style={styles.title}>Press Refresh to Go</Text>)

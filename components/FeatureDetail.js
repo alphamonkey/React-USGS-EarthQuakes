@@ -39,8 +39,12 @@ export default function FeatureDetail ({isVisible, feature, onClose}) {
        onMapReady={mapReady}  
      >
        
-
-        <Marker coordinate={{latitude: feature.geometry.coordinates[1], longitude:feature.geometry.coordinates[0]}} title="Foo" description="Also Foo"/>
+        {feature ? (
+ <Marker coordinate={{latitude: feature.geometry.coordinates[1], longitude:feature.geometry.coordinates[0]}} title="Foo" description="Also Foo"/>
+        ):(
+            <View />
+        )}
+       
        
         
 
