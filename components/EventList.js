@@ -3,7 +3,7 @@ import FeatureListItem from './FeatureListItem';
 export default function EventList({features, onSelect, onCloseModal, currentLocation}) {
     return (
     <View style = {styles.container} >
-    {console.log(features)}
+    
     {features && features.length === 0 ? (<Text style={styles.error}>No results to display.</Text>) :
         <FlatList
         vertical
