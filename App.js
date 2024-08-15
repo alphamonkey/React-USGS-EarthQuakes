@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { registerCallableModule, StyleSheet, Text, View, Alert, SafeAreaView, ActivityIndicator } from 'react-native';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CircleButton from './components/CircleButton';
 import EventList from './components/EventList';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -15,7 +15,12 @@ export default function App() {
   const [title, setTitle] = useState('Press to refresh');
   const [pickedFeature, setPickedFeature] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  
+  const [lastUpdated, setLastUpdated] = useState(null);
+
+  const settingsPressed = () => {
+    alert('Pressed settings');
+  }
+
   const featurePicked = (feature) => {
     setPickedFeature(feature);
     setIsModalVisible(true);
@@ -42,6 +47,14 @@ export default function App() {
 
     return true;
   }
+
+  useEffect(() => {
+    console.log("called");
+
+
+        refreshPressed();
+    
+}, []);
 
   const refreshPressed = async () => {
 
@@ -75,6 +88,7 @@ export default function App() {
         setTitle(json.metadata.title);
 
         setFeatures(json.features);
+        setLastUpdated(new Date());
 
       } else {
         let body = await response.text();
@@ -97,15 +111,21 @@ export default function App() {
        
      
         <View style={styles.bottomBar}>
-          <CircleButton onPress={refreshPressed}  icon="reload" ringColor = 'rgb(102,211,110)'/>
-          {isLoading? (<Text style={styles.title}>Loading...</Text>):(<Text style={styles.title}>Press Refresh to Go</Text>)
-          }
+          {!isLoading ? (<CircleButton onPress={refreshPressed}  icon="reload" ringColor = 'rgb(102,211,110)'/>):(<View/> ) }
+          {isLoading ? (<Text style={styles.title}>Loading...</Text>):(
+            <View style = {{alignItems:'center'}}>
+              <Text style={styles.title}>{features ? (features.length + ' Earthquakes'):('No data, press reload')}</Text>
+              <Text style={styles.subtitle}>Last updated: {lastUpdated ? (lastUpdated.toLocaleDateString() + ' ' +  lastUpdated.toLocaleTimeString()):('Never')}</Text>
+          </View>
+          )}
+          {!isLoading ? (<CircleButton onPress={settingsPressed}  icon="settings-outline" ringColor = '#888'/>):(<View />)}
           
         </View>
       </View>
       <FeatureDetail feature={pickedFeature} isVisible={isModalVisible} onClose={closeModal} />
     </SafeAreaView>
   );
+
 }
 
 const styles = StyleSheet.create({
@@ -119,6 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor:'rgb(51,51,51)',
     alignItems:'center',
     flexDirection:'row-reverse',
+    justifyContent:'space-between',
     borderRadius:16,
     marginLeft:4,
     marginRight:4,
@@ -129,10 +150,15 @@ const styles = StyleSheet.create({
   },
   title: {
     color:'#fff',
-    padding:12,
+
     fontSize:20,
     
 
   
+  },
+  subtitle: {
+    color:'#aaa',
+    fontSize:12,
+    marginTop:4,
   },
 });
