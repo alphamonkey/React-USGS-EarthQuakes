@@ -6,28 +6,38 @@ import EventList from './components/EventList';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import FeatureDetail from './components/FeatureDetail';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setPreference, getPreference} from './components/Preferences';
+import PreferenceView from './components/PreferenceView';
 
 export default function App() {
+  
+  
 
   const [features, setFeatures] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDetailVisible, setisDetailVisible] = useState(false);
+  const [isSettingsVisible, setisSettingsVisible] = useState(false);
   const [title, setTitle] = useState('Press to refresh');
   const [pickedFeature, setPickedFeature] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
   const settingsPressed = () => {
-    alert('Pressed settings');
+    setisSettingsVisible(true);
+  }
+
+  const closeSettings = () => {
+    setisSettingsVisible(false);
   }
 
   const featurePicked = (feature) => {
     setPickedFeature(feature);
-    setIsModalVisible(true);
+    setisDetailVisible(true);
   }
 
-  const closeModal = () => {
-    setIsModalVisible(false);
+  const closeDetail = () => {
+    setisDetailVisible(false);
   }
 
   const milesToKilometers = (miles) => {
@@ -74,7 +84,7 @@ export default function App() {
       return;  
     }
     
-    const radius = milesToKilometers(50);
+    const radius = milesToKilometers(await getPreference('radius'));
     
     let queryDate = new Date();
     queryDate.setDate(queryDate.getDate() - 1);
@@ -122,7 +132,8 @@ export default function App() {
           
         </View>
       </View>
-      <FeatureDetail feature={pickedFeature} isVisible={isModalVisible} onClose={closeModal} />
+      <FeatureDetail feature={pickedFeature} isVisible={isDetailVisible} onClose={closeDetail} />
+      <PreferenceView isVisible={isSettingsVisible} onClose = {closeSettings} />
     </SafeAreaView>
   );
 
