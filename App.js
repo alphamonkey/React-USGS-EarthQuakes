@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { registerCallableModule, StyleSheet, Text, View, Alert, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useState } from 'react'
-import  RefreshButton  from './components/RefreshButton';
+import CircleButton from './components/CircleButton';
 import EventList from './components/EventList';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import FeatureDetail from './components/FeatureDetail';
@@ -97,7 +97,7 @@ export default function App() {
        
      
         <View style={styles.bottomBar}>
-          <RefreshButton onPress={refreshPressed} />
+          <CircleButton onPress={refreshPressed}  icon="reload" ringColor = 'rgb(102,211,110)'/>
           {isLoading? (<Text style={styles.title}>Loading...</Text>):(<Text style={styles.title}>Press Refresh to Go</Text>)
           }
           
