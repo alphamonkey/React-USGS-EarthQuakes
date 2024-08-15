@@ -36,7 +36,7 @@ export default function FeatureListItem({feature, currentLocation}) {
     <View style={styles.container}>
         <View> 
         <Text style={styles.title}>{strippedPlace ? strippedPlace : feature.properties.place}</Text>
-        {feature && currentLocation ? (<View style={styles.subtitleView}><Text style={styles.subtitle}>{new Date(feature.properties.time).toLocaleTimeString().split(':')[0] + ':'  + new Date(feature.properties.time).toLocaleTimeString().split(':')[2]}     </Text><Text style={styles.subtitle}>{computeDistance()} mi</Text></View>):(<View />)}
+        {feature && currentLocation ? (<View style={styles.subtitleView}><Text style={styles.subtitle}>{new Date(feature.properties.time).toLocaleDateString() + ' ' + new Date(feature.properties.time).toLocaleTimeString().split(':')[0] + ':'  + new Date(feature.properties.time).toLocaleTimeString().split(':')[2]}     </Text><Text style={styles.subtitle}>{computeDistance()} mi</Text></View>):(<View />)}
         
         </View>
      
@@ -56,7 +56,7 @@ export default function FeatureListItem({feature, currentLocation}) {
 
 const styles = StyleSheet.create ({
     container: {
-        height:44,
+        height:48,
         borderWidth:1,
         borderColor: 'rgb(31,31,31)',
         marginBottom:1,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create ({
         
     },
     subtitle: {
-        color:'#fff',
+        color:'#aaa',
         marginLeft:4,
     },
     lowMagnitude: {

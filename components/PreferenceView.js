@@ -1,7 +1,7 @@
 import { Modal, View, Text, StyleSheet, SafeAreaView, Pressable, Platform} from 'react-native';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import PreferenceSlider from './PreferenceSlider';
 export default function PreferenceView ({isVisible, onClose}) {
     return (
 <Modal animationType='slide' transparent={true} visible = {isVisible}>
@@ -13,7 +13,13 @@ export default function PreferenceView ({isVisible, onClose}) {
             <Text style={styles.title}>Settings</Text>
         <View style = {styles.blank}/>
         </View>
-        <View style = {styles.body} />
+        <View style = {styles.body}>
+
+            <PreferenceSlider prefKey = "radius" label = "Max radius (miles)" maxVal={500} minVal={5} step = {5}  />
+            <PreferenceSlider prefKey = "minmag" label = "Minimum Magnitude" maxVal={9} minVal={0} step = {0.5}  />
+            <PreferenceSlider prefKey = "daysago" label = "Start Date (days ago)" maxVal={365} minVal={1} step = {1}  />
+                
+        </View>
     
     </SafeAreaView>
 </Modal>
