@@ -6,8 +6,8 @@ import EventList from './components/EventList';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import FeatureDetail from './components/FeatureDetail';
 import * as Location from 'expo-location';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {setPreference, getPreference} from './components/Preferences';
+
+import {setPreference, getPreference, getAllKeys} from './components/Preferences';
 import PreferenceView from './components/PreferenceView';
 
 export default function App() {
@@ -23,12 +23,14 @@ export default function App() {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
+
   const settingsPressed = () => {
     setisSettingsVisible(true);
   }
 
   const closeSettings = () => {
     setisSettingsVisible(false);
+    refreshPressed();
   }
 
   const featurePicked = (feature) => {
@@ -52,7 +54,7 @@ export default function App() {
     }
 
     if (locationPermissionStatus.granted !== true) {
-      return false;
+      return false;     
     }
 
     return true;
@@ -84,12 +86,17 @@ export default function App() {
       return;  
     }
     
-    const radius = milesToKilometers(await getPreference('radius'));
-    
-    let queryDate = new Date();
-    queryDate.setDate(queryDate.getDate() - 1);
+    const kmRadius = await getPreference('radius');
+    const radius = milesToKilometers(parseFloat(kmRadius));
 
-    const urlString = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&starttime=' + queryDate.toISOString() + '&latitude=' + loc.coords.latitude + '&longitude=' + loc.coords.longitude + '&maxradiuskm=' + radius + "&minmagnitude=1" + "&orderby=magnitude";
+    const minmag = await getPreference('minmag');
+
+    const daysAgo = await getPreference('daysago');
+
+    let queryDate = new Date();
+    queryDate.setDate(queryDate.getDate() - parseInt(daysAgo));
+
+    const urlString = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&starttime=' + queryDate.toISOString() + '&latitude=' + loc.coords.latitude + '&longitude=' + loc.coords.longitude + '&maxradiuskm=' + radius + "&minmagnitude=" + parseFloat(minmag) + "&orderby=magnitude";
     console.log(urlString);
     try {
       const response = await fetch(urlString);
