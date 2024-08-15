@@ -1,14 +1,21 @@
-import react from 'react';
+import react, { useEffect } from 'react';
 import { Modal, View, Text, StyleSheet, SafeAreaView, Pressable, Platform} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import MapView,  {PROVIDER_GOOGLE, PROVIDER_DEFAULT} from 'react-native-maps';
 import {Marker}from 'react-native-maps';
 import {useState, useRef} from 'react';
+import PropertyView from './PropertyView';
+
 export default function FeatureDetail ({isVisible, feature, onClose}) {
+
+
     const [mapRef, setMapRef] = useState(null);
 
     const mapReady = () => {
+        if(!feature) {
+            return;
+        }
         console.log(feature.geometry.coordinates[0]);
         console.log(feature.geometry.coordinates[1]);
         const region = {
@@ -19,9 +26,10 @@ export default function FeatureDetail ({isVisible, feature, onClose}) {
         }
         mapRef.animateToRegion(region);
     }
-    
+    const featureTime = feature ? new Date(feature.properties.time) : new Date();
+
     return (
-        
+
     <Modal animationType='slide' transparent={true} visible = {isVisible}>
     <SafeAreaView style = {styles.topLevelContainer}>
         <View style={styles.topBar}>
@@ -31,7 +39,7 @@ export default function FeatureDetail ({isVisible, feature, onClose}) {
             <Text style={styles.title}>{feature ? (feature.properties.title):('No feature loaded')}</Text>
         <View style = {styles.blank}/>
         </View>
-      
+        
        <View style = {styles.map}>
        <MapView 
         ref={(ref) => setMapRef(ref)}
@@ -40,7 +48,7 @@ export default function FeatureDetail ({isVisible, feature, onClose}) {
      >
        
         {feature ? (
- <Marker coordinate={{latitude: feature.geometry.coordinates[1], longitude:feature.geometry.coordinates[0]}} title="Foo" description="Also Foo"/>
+ <Marker coordinate={{latitude: feature.geometry.coordinates[1], longitude:feature.geometry.coordinates[0]}} title={feature.properties.place.toString()} description={feature.geometry.coordinates[1] + ' ' + feature.geometry.coordinates[0]}/>
         ):(
             <View />
         )}
@@ -50,7 +58,14 @@ export default function FeatureDetail ({isVisible, feature, onClose}) {
 
         </MapView>
         </View>
-       <View style = {styles.detail} />
+        {feature ? (
+       <View style = {styles.detail}>
+            <PropertyView propertyName = 'Time' propertyValue = {featureTime.toLocaleDateString() + ' ' + featureTime.toLocaleTimeString()} />
+            <PropertyView propertyName = 'Magnitude' propertyValue = {feature.properties.mag} />
+            <PropertyView propertyName = 'Alert' propertyValue = {feature.properties.alert} />
+            <PropertyView propertyName = 'Intensity' propertyValue = {feature.properties.cdi} />
+            <PropertyView propertyName = 'Significance' propertyValue = {feature.properties.sig / 1000} propertyProgress = {true}/>
+       </View>):(<View />) }
     </SafeAreaView>   
     </Modal>
  
@@ -91,6 +106,7 @@ const styles = StyleSheet.create ({
         marginBottom:12,
         marginRight:12,
         borderRadius:16,
+        justifyContent:'space-around',
     },
     modalContent: {
         flex:1,

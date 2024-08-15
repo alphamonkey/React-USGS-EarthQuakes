@@ -65,7 +65,7 @@ export default function App() {
     
     let queryDate = new Date();
     queryDate.setDate(queryDate.getDate() - 1);
-    console.log(queryDate.toISOString());
+
     const urlString = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&starttime=' + queryDate.toISOString() + '&latitude=' + loc.coords.latitude + '&longitude=' + loc.coords.longitude + '&maxradiuskm=' + radius + "&minmagnitude=1" + "&orderby=magnitude";
     console.log(urlString);
     try {
