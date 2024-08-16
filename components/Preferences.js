@@ -11,7 +11,7 @@ const defaultPreferences = {
     try {
         await AsyncStorage.setItem(prefKey.toString(), value.toString());
     } catch (error) {
-        console.log(error);
+        console.error(error);
         Alert.alert('Preferences Error', error);
     }
   }
@@ -26,7 +26,7 @@ const defaultPreferences = {
             return value;
         }
     } catch(error) {
-        console.log(e);
+        console.error(e);
         return defaultPreferences[prefKey];
     }
 }
