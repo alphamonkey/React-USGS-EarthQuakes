@@ -33,4 +33,8 @@ const styles = StyleSheet.create({
         backgroundColor:'rgb(211,112,102)',
         borderRadius:6,
     },
+    blank: {
+        height:24,
+        width:24,
+    }
 });
