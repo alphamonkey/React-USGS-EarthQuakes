@@ -12,7 +12,6 @@ export default function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [isDetailVisible, setisDetailVisible] = useState(false);
     const [isSettingsVisible, setisSettingsVisible] = useState(false);
-    const [title, setTitle] = useState('Press to refresh');
     const [pickedFeature, setPickedFeature] = useState(null);
     const [currentLocation, setCurrentLocation] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(null);
@@ -97,7 +96,6 @@ export default function App() {
       const response = await fetch(urlString);
       if (response.status === 200) {
         const json = await response.json();
-        setTitle(json.metadata.title);
         setFeatures(json.features);
         setLastUpdated(new Date());
       } else {
