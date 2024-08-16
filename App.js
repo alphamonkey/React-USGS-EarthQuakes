@@ -148,11 +148,9 @@ export default function App() {
       <PreferenceView isVisible={isSettingsVisible} onClose = {closeSettings} />
     </SafeAreaView>
   );
-
 }
 
 const styles = StyleSheet.create({
-
   topLevelContainer: {
     flex: 1,
     backgroundColor: 'rgb(31, 31, 31)',
