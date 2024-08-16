@@ -12,12 +12,14 @@
 ## Project Screenshots
 <img src="https://github.com/user-attachments/assets/ab4c0db3-9091-4e2d-a434-a4950e4be2be" width="285px" align="center">
 <img src="https://github.com/user-attachments/assets/50586933-b5cc-4ffd-8483-8a115a9af2c9" width="285px" align="center">
+<br />
+<br />
+
+
 <img src="https://github.com/user-attachments/assets/049012a8-939d-423b-8fff-d17e227c4459" width="285px" align="center">
 
-
-
 ## How to Build
-  React-USGS-EarthQuakes requires the Expo framework (https://expo.dev/).  Using expo's command line tools, developers can build the project with the expo CLI with this command: `npx expo run`. Developers can also build the project using EAS build services.
+  React-USGS-EarthQuakes requires the Expo framework (https://expo.dev/).  Using expo's command line tools, developers can build the project with the expo CLI with this command: `npx expo run`. Developers can also build the project using EAS build services.  For iOS, you can open the '.xcodeproj' file located in the ios/ directory in XCode and press the 'Build and Run' button.
 
 
 
