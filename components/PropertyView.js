@@ -22,12 +22,9 @@ const styles = StyleSheet.create({
     },
     value: {
         color: '#fff',
-
-
     },
     null: {
         color: '#888',
         fontStyle:'italic',
     }
-
 });

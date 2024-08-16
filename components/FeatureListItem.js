@@ -1,56 +1,66 @@
 import {Text, View, StyleSheet} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {getDistance} from "geolib";
-import {Intl} from 'react-native-intl';
-
 
 export default function FeatureListItem({feature, currentLocation}) {
-
     const strippedPlace = feature.properties.place.split(' of ')[1];
-    const relativeTime = (time) => {
-        const rtf = new Intl.RelativeTimeFormat('en', {style:'short'});
-        console.log(rtf.format)
+    const featureLatitude = feature.geometry.coordinates[1];
+    const featureLongitude = feature.geometry.coordinates[0];
+    const currentLatitude = currentLocation[0];
+    const currentLongitude = currentLocation[1];
+
+    const getMagStyle= () => {
+        let magStyle = styles.magnitude;
+        
+        if (feature.properties.mag < 3.0) {
+            magStyle = styles.lowMagnitude;
+        }
+      
+        if (feature.properties.mag > 6.0) {
+            magStyle = styles.highMagnitude;
+        }
+
+        return magStyle;
     }
+
     const metersToMiles = (meters) => {
         const kilometers = meters / 1000;
         return kilometers * 0.621371;
     }
 
     const computeDistance = () => {
-        return Math.trunc(metersToMiles(getDistance({latitude:feature.geometry.coordinates[1], longitude:feature.geometry.coordinates[0]},{latitude:currentLocation[0], longitude:currentLocation[1]}))); 
+        return Math.trunc(metersToMiles(getDistance({latitude:featureLatitude, longitude:featureLongitude},{latitude:currentLatitude, longitude:currentLongitude}))); 
     }
-    var magStyle = styles.magnitude;
-    var magColor = 'rgb(211,211,102)';
 
-
-    if (feature.properties.mag < 3.0) {
-        magStyle = styles.lowMagnitude;
-        magColor = 'rgb(102,211,211)';
-
+    const getDateTimeString = () => {
+        const featureTime = new Date(feature.properties.time);
+        const localeTime = featureTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        const localeDate = featureTime.toLocaleDateString();
+        return localeDate + ' ' + localeTime;
     }
-    if (feature.properties.mag > 6.0) {
-        magStyle = styles.highMagnitude;
-        magColor = 'rgb(211,112,102)';
-    }
+
     return (
-    <View style={styles.container}>
-        <View> 
-        <Text style={styles.title}>{strippedPlace ? strippedPlace : feature.properties.place}</Text>
-        {feature && currentLocation ? (<View style={styles.subtitleView}><Text style={styles.subtitle}>{new Date(feature.properties.time).toLocaleDateString() + ' ' + new Date(feature.properties.time).toLocaleTimeString().split(':')[0] + ':'  + new Date(feature.properties.time).toLocaleTimeString().split(':')[2]}     </Text><Text style={styles.subtitle}>{computeDistance()} mi</Text></View>):(<View />)}
-        
-        </View>
+        <View style={styles.container}>
+            <View style={{flex:1.25}}> 
+                <Text style={styles.title}>{strippedPlace ? strippedPlace : feature.properties.place}</Text>
+                {feature && currentLocation ? (
+                    <View style={styles.subtitleView}>
+                        <Text style={styles.subtitle}>{getDateTimeString()}</Text>
+                        <Text style={styles.subtitle}>{computeDistance()} mi</Text>
+                    </View>)
+                    :
+                    (<View />)
+                }
+            </View>
      
-        
-        {feature.properties.mag ? (
-        <View style = {styles.magView}> 
-             <Text style={magStyle}>{feature.properties.mag.toFixed(2)}</Text>
-             <Ionicons name="pulse-outline" size={24} color={magColor} />
+            {feature.properties.mag ? (
+                <View style = {styles.magView}> 
+                    <Text style={getMagStyle()}>{feature.properties.mag.toFixed(2)}</Text>
+                    <Ionicons name="pulse-outline" size={24} color={getMagStyle().color} />
+                </View>
+            ):   
+            (<Text />)}
         </View>
-       ):
-        
-        (<Text />)}
-
-    </View>
     );
 }
 
@@ -66,7 +76,6 @@ const styles = StyleSheet.create ({
         alignItems:'center',
 
     },
-
     title: {
         color:'#fff',
         marginLeft:4,
@@ -75,9 +84,7 @@ const styles = StyleSheet.create ({
     subtitleView: {
         marginTop:4,
         flexDirection : 'row',
-        justifyContent:'space-between',
-        alignItems:'stretch',
-        
+        justifyContent:'space-between',     
     },
     subtitle: {
         color:'#aaa',
@@ -101,6 +108,7 @@ const styles = StyleSheet.create ({
     magView: {
         alignItems:'center',
         flexDirection:'row-reverse',
+        flex:1,
     },
 
 })

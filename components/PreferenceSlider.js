@@ -1,19 +1,17 @@
-import Slider from '@react-native-community/slider';
-import {View, Text, StyleSheet} from 'react-native';
-import {getAllKeys, getPreference, setPreference} from './Preferences';
 import { useEffect, useState } from 'react'
+import {View, Text, StyleSheet} from 'react-native';
+import Slider from '@react-native-community/slider';
+import {getPreference, setPreference} from './Preferences';
 import PropertyView from './PropertyView'
-
 
 export default function PreferenceSlider({prefKey, label, minVal, maxVal, step}) {
     const [sliderValue, setSliderValue] =  useState(minVal);
-
-    
 
     const updateSlider = async () => {
         const value = await getPreference(prefKey);
         setSliderValue(parseFloat(value));
     }
+
     const slideFinished = async (newValue) => {
         await setPreference(prefKey, newValue);
         setSliderValue(newValue);
@@ -25,7 +23,6 @@ export default function PreferenceSlider({prefKey, label, minVal, maxVal, step})
 
     useEffect(() => {
         updateSlider();
-
     }, []);
 
     return (
@@ -40,9 +37,7 @@ export default function PreferenceSlider({prefKey, label, minVal, maxVal, step})
               maximumTrackTintColor='#aaa'
               thumbTintColor='rgb(102,211,110)'
               onSlidingComplete = {slideFinished}
-              onValueChange = {sliderChanged}
-
-             
+              onValueChange = {sliderChanged}        
             />
         </View>
     )
@@ -51,12 +46,5 @@ export default function PreferenceSlider({prefKey, label, minVal, maxVal, step})
 const styles = StyleSheet.create({
     preference: {
         padding:12,
-    },
-    slider: {
-        width:200,
-    },
-    title: {
-        fontWeight:'bold',
-        fontColor:'#fff',
     },
 })

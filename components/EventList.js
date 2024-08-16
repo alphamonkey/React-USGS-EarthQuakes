@@ -1,28 +1,21 @@
 import {View, StyleSheet, FlatList, Text, Pressable} from 'react-native';
 import FeatureListItem from './FeatureListItem';
+
 export default function EventList({features, onSelect, onCloseModal, currentLocation}) {
     return (
-    <View style = {styles.container} >
-    
-    {features && features.length === 0 ? (<Text style={styles.error}>No results to display.</Text>) :
-        <FlatList
-        vertical
-        data = {features}
-        contentContainerStyle = {styles.listContainer}
-        renderItem = {( {item, index}) => (
-
-            <Pressable onPress={() => {onSelect(item)}}>
-                <FeatureListItem feature={item} currentLocation={currentLocation} />
-            </Pressable>
-
-        )}
-        />
-    }
-
-
-    </View>
+        <View style = {styles.container} >   
+            {features && features.length === 0 ? 
+                <Text style={styles.error}>No results to display.</Text> :
+        
+                <FlatList vertical data = {features} contentContainerStyle = {styles.listContainer} renderItem = {( {item, index}) => (
+                    <Pressable onPress={() => {onSelect(item)}}>
+                        <FeatureListItem feature={item} currentLocation={currentLocation} />
+                    </Pressable>
+                    )}
+                />
+            }
+        </View>
     )
-
 }
 
 const styles = StyleSheet.create ( {
@@ -36,12 +29,9 @@ const styles = StyleSheet.create ( {
         borderRadius:16,
         alignItems:'stretch',
         justifyContent:'center',
-
-
     },
     listContainer:  {
         padding:16,
-        
     },
     title: {
         color:'#fff',
@@ -50,7 +40,5 @@ const styles = StyleSheet.create ( {
         color:'#fff',
         textAlign:'center',
     }
-
-
 }
 );
