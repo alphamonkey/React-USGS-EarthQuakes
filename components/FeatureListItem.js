@@ -1,6 +1,6 @@
 import {Text, View, StyleSheet} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {getDistance} from "geolib";
+import {getDistance} from 'geolib';
 
 export default function FeatureListItem({feature, currentLocation}) {
     const strippedPlace = feature.properties.place.split(' of ')[1];
@@ -56,7 +56,7 @@ export default function FeatureListItem({feature, currentLocation}) {
             {feature.properties.mag ? (
                 <View style = {styles.magView}> 
                     <Text style={getMagStyle()}>{feature.properties.mag.toFixed(2)}</Text>
-                    <Ionicons name="pulse-outline" size={24} color={getMagStyle().color} />
+                    <Ionicons name='pulse-outline' size={24} color={getMagStyle().color} />
                 </View>
             ):   
             (<Text />)}

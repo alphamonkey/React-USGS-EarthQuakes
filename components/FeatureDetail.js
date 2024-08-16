@@ -63,14 +63,6 @@ const styles = StyleSheet.create ({
         flex:1,
         backgroundColor:'rgb(31,31,31)',       
     },
-    topBar: {
-        flex:1,
-        alignItems:'center',
-        flexDirection:'row',
-        justifyContent:'space-between',
-        marginLeft:12,
-        marginRight:12,
-    },
     map: {
         flex:18,
         backgroundColor:'rgb(51,51,51)',
@@ -80,10 +72,6 @@ const styles = StyleSheet.create ({
         marginBottom:12,
         borderRadius:16,
     },
-    blank: {
-        height:24,
-        width:24,
-    },
     detail: {
         flex:4,
         backgroundColor:'rgb(51,51,51)',
@@ -92,17 +80,6 @@ const styles = StyleSheet.create ({
         marginRight:12,
         borderRadius:16,
         justifyContent:'space-around',
-    },
-    title: {
-        color:'#fff',
-        fontSize:16,
-        fontWeight:'bold',
-        paddingLeft:12,
-        paddingRight:12,
-    },
-    closeButton: {
-        backgroundColor:'rgb(211,112,102)',
-        borderRadius:6,
     },
     mapView: {
         width:'100%',

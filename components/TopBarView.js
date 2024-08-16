@@ -5,7 +5,7 @@ export default function TopBarView({title, onClose}) {
     return (
         <View style={styles.topBar}>
             <Pressable  onPress = {onClose} style={styles.closeButton}>
-                <Ionicons name="close" size={24} color='#fff' />
+                <Ionicons name='close' size={24} color='#fff' />
             </Pressable>
             <Text style={styles.title}>{title}</Text>
             <View style = {styles.blank}/>

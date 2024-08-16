@@ -87,8 +87,8 @@ export default function App() {
       '&latitude=' + loc.coords.latitude + 
       '&longitude=' + loc.coords.longitude + 
       '&maxradiuskm=' + radius + 
-      "&minmagnitude=" + parseFloat(minmag) + 
-      "&orderby=magnitude";
+      '&minmagnitude=' + parseFloat(minmag) + 
+      '&orderby=magnitude';
 
     console.log(urlString);
 
@@ -122,7 +122,7 @@ export default function App() {
         }
         <View style={styles.bottomBar}>
           {!isLoading ? 
-            (<CircleButton onPress={refreshPressed} icon="reload" ringColor = 'rgb(102,211,110)'/>)
+            (<CircleButton onPress={refreshPressed} icon='reload' ringColor = 'rgb(102,211,110)'/>)
             :
             (<View/> ) 
           }
@@ -136,7 +136,7 @@ export default function App() {
             )
           }
           {!isLoading ? 
-            (<CircleButton onPress={settingsPressed}  icon="settings-outline" ringColor = '#888'/>)
+            (<CircleButton onPress={settingsPressed}  icon='settings-outline' ringColor = '#888'/>)
             :
             (<View />)
           }

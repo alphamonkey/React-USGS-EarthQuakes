@@ -33,9 +33,6 @@ const styles = StyleSheet.create ( {
     listContainer:  {
         padding:16,
     },
-    title: {
-        color:'#fff',
-    },
     error: {
         color:'#fff',
         textAlign:'center',
