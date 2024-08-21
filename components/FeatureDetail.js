@@ -29,7 +29,7 @@ export default function FeatureDetail ({isVisible, feature, onClose}) {
         <SafeAreaView style = {styles.topLevelContainer}>
             <TopBarView title = {feature ? feature.properties.title : 'No Features Loaded' } onClose = {onClose} />
             <View style = {styles.map}>
-                <MapView    ref={(ref) => setMapRef(ref)}
+            <MapView    ref={(ref) => setMapRef(ref)}
                             provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT} style={styles.mapView} 
                             onMapReady={mapReady}>
        
@@ -49,7 +49,7 @@ export default function FeatureDetail ({isVisible, feature, onClose}) {
                     <PropertyView propertyName = 'Magnitude' propertyValue = {feature.properties.mag} />
                     <PropertyView propertyName = 'Alert' propertyValue = {feature.properties.alert} />
                     <PropertyView propertyName = 'Intensity' propertyValue = {feature.properties.cdi} />
-                    <PropertyView propertyName = 'Significance' propertyValue = {feature.properties.sig / 1000} propertyProgress = {true}/>
+                    <PropertyView propertyName = 'Significance' propertyValue = {feature.properties.sig}/>
                 </View>):
                 (<View />) 
             }
