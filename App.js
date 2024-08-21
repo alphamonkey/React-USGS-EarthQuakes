@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Alert, SafeAreaView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import CircleButton from './components/CircleButton';
 import EventList from './components/EventList';
@@ -15,7 +15,10 @@ export default function App() {
     const [pickedFeature, setPickedFeature] = useState(null);
     const [currentLocation, setCurrentLocation] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(null);
-  
+    const [isShowingError, setIsShowingError] = useState(false);
+    const [errorTitle, setErrorTitle] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
+    
     const settingsPressed = () => {
       setisSettingsVisible(true);
     }
@@ -53,7 +56,21 @@ export default function App() {
     }
 
     useEffect(() => {
-        refreshPressed();
+      (async () => {
+        let {status} = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          console.error('Location permissions denied')
+          setErrorTitle('Location Error');
+          setErrorMessage('Unable to get your current location.  Please make sure you have granted permission to use your location in settings');
+          setIsShowingError(true);
+        }
+        else {
+          let loc = await Location.getCurrentPositionAsync({});
+          setCurrentLocation(loc);
+          await refreshPressed();
+        }
+
+      })();
     }, []);
 
 
@@ -66,21 +83,18 @@ export default function App() {
     let queryDate = new Date();
     queryDate.setDate(queryDate.getDate() - parseInt(daysAgo));
 
-    if (checkLocationPermissions() === false) {
-      console.error('Location permission not granted.');
-      Alert.alert('Location Error', 'Please grant permission to use location services in Settings');
-      setIsLoading(false);
-      return;
-    }
-
     let loc = await Location.getCurrentPositionAsync({});
-    
+    setCurrentLocation(loc);
+   
     if (!loc) {
       console.error('Unknown location error.');
-      Alert.alert('Location Error', 'Unable to get current location');
+      setErrorTitle('Location Error');
+      setErrorMessage('Unable to get your current location.  Please make sure you have granted permission to use your location in settings');
+      setIsShowingError(true);
       setIsLoading(false);
       return;  
     }
+    setIsShowingError(false);
 
     const urlString = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake' + 
       '&starttime=' + queryDate.toISOString() + 
@@ -100,12 +114,16 @@ export default function App() {
         setLastUpdated(new Date());
       } else {
           let body = await response.text();
-          Alert.alert('HTTP Error ' + response.status, body);
+          setIsShowingError(true);
+          setErrorTitle('HTTP Error ' + response.status);
+          setErrorMessage(body)
           console.error('HTTP Error' + response.status + body);
       }
     } catch (error) {
-      Alert.alert('Fetch Error', error);
-      console.error('Fetch Error' + error);
+      setIsShowingError(true);
+      setErrorTitle('Fetch Error');
+      setErrorMessage(error);
+      console.error('Fetch Error' + error.substring(0, 4096));
     } 
 
     setCurrentLocation([loc.coords.latitude, loc.coords.longitude]);
@@ -118,7 +136,7 @@ export default function App() {
         {isLoading ? 
           (<ActivityIndicator size='large' color='rgb(102,211,110)' style={{flex:1}}/>)
           :
-          (<EventList features={features} onSelect={featurePicked} currentLocation={currentLocation}/>)
+          (<EventList features={features} onSelect={featurePicked} currentLocation={currentLocation} isShowingError = {isShowingError} errorMessage = {errorMessage} errorTitle = {errorTitle}/>)
         }
         <View style={styles.bottomBar}>
           {!isLoading ? 

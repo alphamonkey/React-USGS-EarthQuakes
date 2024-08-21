@@ -1,8 +1,11 @@
 import {View, StyleSheet, FlatList, Text, Pressable} from 'react-native';
 import FeatureListItem from './FeatureListItem';
+import ErrorPage from './ErrorPage';
 
-export default function EventList({features, onSelect, onCloseModal, currentLocation}) {
+export default function EventList({features, onSelect, onCloseModal, currentLocation, isShowingError, errorMessage, errorTitle}) {
+    if (isShowingError !== true) {
     return (
+        
         <View style = {styles.container} >   
             {features && features.length === 0 ? 
                 <Text style={styles.error}>No results to display.</Text> :
@@ -15,7 +18,12 @@ export default function EventList({features, onSelect, onCloseModal, currentLoca
                 />
             }
         </View>
-    )
+    )}
+    else {
+        return (
+            <ErrorPage errorTitle={errorTitle} errorMessage = {errorMessage} />
+        )
+    }
 }
 
 const styles = StyleSheet.create ( {
